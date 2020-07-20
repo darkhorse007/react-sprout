@@ -2,7 +2,13 @@ import { ToyReact, Component } from './ToyReact'
 
 class MyComponent extends Component {
   render() {
-    return <div>Hello, React</div>
+    const name = 'My-Component'
+    return (
+      <div data-url="bing.com">
+        <h2>Hello, React</h2>
+        <h3>{name}</h3>
+      </div>
+    )
   }
 }
 
