@@ -1,16 +1,14 @@
-import { ToyReact, Component } from './toyReact.js'
+import { ToyReact, ToyReactDOM } from './ToyReact'
 
-class Square extends Component {
-  render() {
-    return (
-      <button className="square" onClick={this.props.onClick}>
-        {this.props.value}
-      </button>
-    )
+class Board extends ToyReact.Component {
+  willMount(lifeState) {
+    console.log('Board will mount', lifeState)
   }
-}
 
-class Board extends Component {
+  didMount(lifeState) {
+    console.log('Board did mount', lifeState)
+  }
+
   renderSquare(i) {
     return <Square value={this.props.squares[i]} onClick={() => this.props.onClick(i)} />
   }
@@ -38,7 +36,33 @@ class Board extends Component {
   }
 }
 
-class Game extends Component {
+class Square extends ToyReact.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: null
+    }
+  }
+
+  willUpdate(prevState, nextState) {
+    console.log('willUpdate')
+    console.log('prevState', prevState, 'nextState', nextState)
+  }
+
+  didUpdate() {
+    console.log('didUpdate', this.state)
+  }
+
+  render() {
+    return (
+      <button className="square" onClick={this.props.onClick}>
+        {this.props.value}
+      </button>
+    )
+  }
+}
+
+class Game extends ToyReact.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -104,18 +128,14 @@ class Game extends Component {
         <div className="game-board">
           <Board squares={current.squares} onClick={(i) => this.handleClick(i)} />
         </div>
-        <div className="game-info">
+        {/* <div className="game-info">
           <div>{status}</div>
           <ol>{moves}</ol>
-        </div>
+        </div> */}
       </div>
     )
   }
 }
-
-// ========================================
-
-ToyReact.render(<Game />, document.body)
 
 function calculateWinner(squares) {
   const lines = [
@@ -136,3 +156,7 @@ function calculateWinner(squares) {
   }
   return null
 }
+
+let app = <Game />
+
+ToyReactDOM.render(app, document.getElementById('app'))
